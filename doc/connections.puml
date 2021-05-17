@@ -1,11 +1,37 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-autonumber
+class Field {
+    -isFilled: boolean
+    -index: int
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+    +setFilled(filled: boolean): void
+    +isFilled(): boolean
+    +getIndex(): int
+}
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+class Game {
+    -turnCounter: int
+    -fields: List<Field>
+    -player: List<Player>
+
+    +conquer(): void
+    +nextTurn(): void
+    +finished(): boolean
+}
+
+interface IGame {
+    +conquer(): void
+}
+
+class Player {
+    -id: int
+
+    +getId(): int
+}
+
+Game .up.> IGame
+
+Game ..> Field : <<uses>>
+Game ..> Player : <<uses>>
+
 @enduml
