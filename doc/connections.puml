@@ -10,13 +10,22 @@ class Field {
 }
 
 class Game {
-    -turnCounter: int
+    -[static] HIGHEST_INDEX: int
+    -[static] LINE_SIZE: int
+
     -fields: List<Field>
     -player: List<Player>
+    -results: List<List<Integer>>
 
-    +conquer(): void
+    -turnCounter: int
+    -winner: Player
+
+    +conquer(): boolean
     +nextTurn(): void
     +finished(): boolean
+    +getTurnCounter(): int
+    +getWinner(): Player
+    +toString(): String
 }
 
 interface IGame {
