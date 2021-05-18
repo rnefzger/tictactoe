@@ -1,12 +1,15 @@
 @startuml
 
 class Field {
-    -isFilled: boolean
     -index: int
+    -isFilled: boolean
+    -belongsTo: Player
 
     +setFilled(filled: boolean): void
+    +setBelongsTo(belongsTo: Player): void
     +isFilled(): boolean
     +getIndex(): int
+    +belongsTo: Player
 }
 
 class Game {
