@@ -32,7 +32,9 @@ class Game {
 }
 
 interface IGame {
-    +conquer(): void
+    +nextTurn(): void
+    +conquer(): boolean
+    +finished(): boolean
 }
 
 class Player {
