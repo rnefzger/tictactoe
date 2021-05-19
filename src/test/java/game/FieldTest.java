@@ -7,11 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class FieldTest {
 
     @Test
-    void setFilled() {
+    void printAField() {
         Field field = new Field(0);
-
-        field.setFilled(true);
-
-        assertTrue(field.isFilled());
+        assertEquals("[ ]", field.toString());
     }
 }

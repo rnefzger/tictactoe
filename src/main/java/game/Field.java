@@ -3,16 +3,28 @@ package game;
 import javax.annotation.processing.Generated;
 import java.util.Objects;
 
+/**
+ * Represents a Field of the game
+ */
 public class Field {
 
+    /**
+     * Positioning of the field.
+     */
     private final int index;
+    /**
+     * Indicates whether this field has been conquered.
+     */
     private boolean isFilled;
+    /**
+     * Indicates to whom this field belongs.
+     */
     private Player belongsTo;
 
     Field(final int index) {
         this.index = index;
         isFilled = false;
-        belongsTo = new Player(2);
+        belongsTo = new Human(2);
     }
 
     @Generated({})
@@ -53,5 +65,15 @@ public class Field {
     @Generated({})
     public int hashCode() {
         return Objects.hash(index);
+    }
+
+    /**
+     * Returns this Field.
+     *
+     * @return this Field
+     */
+    @Override
+    public String toString() {
+        return String.format("[%s]", belongsTo);
     }
 }
