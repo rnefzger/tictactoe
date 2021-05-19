@@ -6,5 +6,7 @@ public interface IGame {
 
     boolean conquer(final int index);
 
-    boolean finished();
+    boolean win();
+
+    boolean gameOver();
 }
