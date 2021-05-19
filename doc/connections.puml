@@ -9,12 +9,15 @@ class Field {
     +setBelongsTo(belongsTo: Player): void
     +isFilled(): boolean
     +getIndex(): int
-    +belongsTo: Player
+    +getBelongsTo(): Player
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
 }
 
 class Game {
-    -[static] HIGHEST_INDEX: int
-    -[static] LINE_SIZE: int
+    -{static} HIGHEST_INDEX: int
+    -{static} LINE_SIZE: int
 
     -fields: List<Field>
     -player: List<Player>
@@ -23,29 +26,78 @@ class Game {
     -turnCounter: int
     -winner: Player
 
-    +conquer(): boolean
     +nextTurn(): void
-    +finished(): boolean
+    +conquer(index: int): boolean
+    +gameOver(): boolean
+    +win(): boolean
     +getTurnCounter(): int
     +getWinner(): Player
+    +getPlayers(): List<Player>
     +toString(): String
 }
 
 interface IGame {
     +nextTurn(): void
-    +conquer(): boolean
-    +finished(): boolean
+    +conquer(index: int): boolean
+    +win(): boolean
+    +gameOver(): boolean
 }
 
 class Player {
     -id: int
 
+    +{abstract} turn(scanner: Scanner): int
+
     +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
 }
 
-Game .up.> IGame
+class Human {
+    -id: int
 
-Game ..> Field : <<uses>>
-Game ..> Player : <<uses>>
+    +turn(scanner: Scanner): int
+    +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
+
+class Computer {
+    -id: int
+
+    +turn(scanner: Scanner): int
+    +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
+
+class Main {
+    -{static} VS_COM: int
+    -{static} VS_HUMAN: int
+    -{static} playable: boolean
+    -{static} scanner: Scanner
+
+    -{static} runGame(input: String, vsComputer: boolean): void
+    +{static} main(args: String[]): void
+}
+
+Game .left.> IGame
+
+Game .up.> Field : <<uses>>
+Game .up.> Human : <<uses>>
+Game .up.> Computer : <<uses>>
+
+Human -up-|> Player
+Computer -up-|> Player
+
+Field .up.> Human : <<uses>>
+Field .up.> Computer : <<uses>>
+
+Main .up.> Computer : <<uses>>
+Main .up.> Human : <<uses>>
+Main .up.> Game : <<uses>>
 
 @enduml
