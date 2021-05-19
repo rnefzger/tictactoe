@@ -3,6 +3,9 @@ package game;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a game of tictactoe and its rules
+ */
 public class Game implements IGame {
 
     /**
