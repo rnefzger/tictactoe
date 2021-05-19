@@ -8,10 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
 
     private Game game;
+    private Game gameVSCom;
 
     @BeforeEach
     void init(){
-        game = new Game();
+        game = new Game(false);
+        gameVSCom = new Game(true);
     }
 
     @Test
@@ -23,10 +25,10 @@ class GameTest {
 
     @Test
     void nextTurnModulo2() {
-        game.nextTurn();
-        game.nextTurn();
+        gameVSCom.nextTurn();
+        gameVSCom.nextTurn();
 
-        assertEquals(0, game.getTurnCounter());
+        assertEquals(0, gameVSCom.getTurnCounter());
     }
 
     @Test
@@ -60,7 +62,7 @@ class GameTest {
         game.conquer(4);
         game.conquer(2);
 
-        assertEquals(new Player(0), game.getWinner());
+        assertEquals(new Human(0), game.getWinner());
     }
 
     @Test
@@ -72,7 +74,22 @@ class GameTest {
         game.conquer(6);
         game.conquer(5);
 
-        assertEquals(new Player(1), game.getWinner());
+        assertEquals(new Human(1), game.getWinner());
+    }
+
+    @Test
+    void gameOver() {
+        game.conquer(0);
+        game.conquer(1);
+        game.conquer(2);
+        game.conquer(3);
+        game.conquer(4);
+        game.conquer(5);
+        game.conquer(6);
+        game.conquer(7);
+        game.conquer(8);
+
+        assertTrue(game.gameOver());
     }
 
     @Test

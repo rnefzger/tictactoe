@@ -5,37 +5,81 @@ import java.util.stream.Collectors;
 
 public class Game implements IGame {
 
+    /**
+     * Highest index for a Field
+     */
     private static final int HIGHEST_INDEX = 8;
+    /**
+     * Size of a printed line
+     */
     private static final int LINE_SIZE = 3;
 
+    /**
+     * Storage of the fields
+     */
     private final List<Field> fields;
+    /**
+     * Storage of the players
+     */
     private final List<Player> players;
+    /**
+     * Storage of the results
+     */
     private final List<List<Integer>> results = new ArrayList(
             List.of(new ArrayList<>(List.of(0, 1, 2)), new ArrayList<>(List.of(3, 4, 5)), new ArrayList<>(List.of(6, 7, 8)),
                     new ArrayList<>(List.of(0, 3, 6)), new ArrayList<>(List.of(1, 4, 7)), new ArrayList<>(List.of(2, 5, 8)),
                     new ArrayList<>(List.of(0, 4, 8)), new ArrayList<>(List.of(2, 4, 6))));
 
+    /**
+     * Counter to calculate which player is to act
+     */
     private int turnCounter;
-    private Player winner = null;
+    /**
+     * The winner of the game
+     */
+    private Player winner;
 
-    Game() {
+    /**
+     * Initializes a game.
+     *
+     * @param vsComputer true, if the game is vs a computer, otherwise false
+     */
+    public Game(final boolean vsComputer) {
         fields = new ArrayList<>();
 
+        //Adds all fields to fields
         for (int i = 0; i < 9; i++) {
             fields.add(new Field(i));
         }
 
-        players = new ArrayList<>(List.of(new Player(0), new Player(1)));
+        //Initializes players
+        if (vsComputer) {
+            players = new ArrayList<>(List.of(new Human(0), new Computer(1)));
+        } else {
+            players = new ArrayList<>(List.of(new Human(0), new Human(1)));
+        }
+
         turnCounter = 0;
+        //Sets a default winner
+        winner = new Computer(2);
 
         fields.sort(Comparator.comparingInt(Field::getIndex));
     }
 
+    /**
+     * Calculates the next turn
+     */
     @Override
     public void nextTurn() {
         turnCounter = ++turnCounter % 2;
     }
 
+    /**
+     * Let the current player conquer the given field
+     *
+     * @param index field to be conquered
+     * @return true, if the field got conquered, otherwise false
+     */
     @Override
     public boolean conquer(int index) {
         if (index < 0 || index > HIGHEST_INDEX) {
@@ -51,7 +95,7 @@ public class Game implements IGame {
         field.setFilled(true);
         field.setBelongsTo(players.get(turnCounter));
 
-        if (finished()) {
+        if (win()) {
             winner = players.get(turnCounter);
         }
 
@@ -59,8 +103,23 @@ public class Game implements IGame {
         return true;
     }
 
+    /**
+     * Checks if the game is completely filled
+     *
+     * @return true, if all fields are filled, otherwise false
+     */
     @Override
-    public boolean finished() {
+    public boolean gameOver() {
+        return  fields.stream().allMatch(Field::isFilled);
+    }
+
+    /**
+     * Checks if the current player won the game
+     *
+     * @return true, if the player won the game, otherwise false
+     */
+    @Override
+    public boolean win() {
         List<Integer> currentPlayerFields = fields.stream()
                 .filter(x -> x.getBelongsTo().getId() == turnCounter)
                 .map(Field::getIndex)
@@ -77,14 +136,17 @@ public class Game implements IGame {
         return winner;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Generates the matchfield
+     *
+     * @return the matchfield
+     */
     @Override
     public String toString() {
-//        String[] string = fields.stream()
-//                .map(x -> x.getBelongsTo().toString())
-//                .collect(Collectors.joining("][", "[", "]")).split();
-//
-//        return String.format("%s\n%s\n%s", string[0], string[1], string[2]);
-
         StringBuilder stats = new StringBuilder();
 
         fields.forEach(x -> {
@@ -92,7 +154,7 @@ public class Game implements IGame {
                 stats.append("\n");
             }
 
-            stats.append(x.getBelongsTo());
+            stats.append(x);
         });
 
         return stats.toString();
