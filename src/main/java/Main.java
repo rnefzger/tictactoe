@@ -4,6 +4,9 @@ import game.Player;
 
 import java.util.Scanner;
 
+/**
+ * This class is used to start the game and to print out game states.
+ */
 public class Main {
 
     private static final String VS_COM = "1";
@@ -12,6 +15,9 @@ public class Main {
     private static final String VS_HUMAN_STR = "einen Gegenspieler";
     private static final String YES = "yes";
 
+    /**
+     * Is used to set console Colors
+     */
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -33,18 +39,29 @@ public class Main {
     private static final String REPLAY = ANSI_CYAN + "Wollen Sie eine weitere Runde spielen?\n" +
             "Für ein ja geben Sie bitte yes ein, bei einer anderen Eingabe wird das Spiel beendet." + ANSI_RESET;
 
+    /**
+     * Boolean to check if the game is still playable
+     */
     private static boolean playable = true;
 
-    private static void runGame(final String input, final boolean vsComputer) {
+    /**
+     * Runs the game
+     *
+     * @param input to be printed out what kind of game it is
+     * @param vsComputer true, if it's a game vs a computer, otherwise false
+     * @param forTests to set a fix index (only used for testing the method)
+     */
+    private static void runGame(final String input, final boolean vsComputer, final Integer... forTests) {
         Game game = new Game(vsComputer);
         boolean outputCom = true;
 
         System.out.printf(INTRO, input);
         System.out.println(game + "\n");
 
+        // loop for the game
         while (game.getWinner().getId() == 2 && !game.gameOver()) {
             Player currentPlayer = game.getPlayers().get(game.getTurnCounter());
-            boolean moved = false;
+            boolean moved;
 
             if (currentPlayer instanceof Human) {
                 System.out.printf(CHOOSE, game.getTurnCounter() + 1);
@@ -54,7 +71,7 @@ public class Main {
                 outputCom = false;
             }
 
-            moved = game.conquer();
+            moved = game.conquer(forTests);
 
             if (moved) {
                 System.out.println(game);
