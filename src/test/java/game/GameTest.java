@@ -17,6 +17,11 @@ class GameTest {
     }
 
     @Test
+    void getPlayers() {
+        assertEquals(2, game.getPlayers().size());
+    }
+
+    @Test
     void nextTurn() {
         game.nextTurn();
 
