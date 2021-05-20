@@ -8,6 +8,11 @@ import java.util.Objects;
 public abstract class Player {
 
     /**
+     * Highest index for a Field
+     */
+    static final int HIGHEST_INDEX = 8;
+
+    /**
      * The unique identifier of this player
      */
     private final int id;
@@ -21,12 +26,20 @@ public abstract class Player {
     }
 
     /**
-     * Carry out a turn of the current player
+     * Calculates the index to conquer
      *
-     * @param index to be conquered
      * @return the index to conquer
      */
-    public abstract int turn(final int index);
+    public abstract int conquer();
+
+    /**
+     * Sets the index which is used for tests
+     *
+     * @return the index to conquer
+     */
+    public int conquer(final int index) {
+        return index;
+    }
 
     @Override
     public boolean equals(Object o) {

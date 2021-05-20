@@ -7,20 +7,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
-    Player player;
+    private Player player;
     private Player samePlayer;
 
     @BeforeEach
     void init() {
         player = new Player(0) {
             @Override
-            public int turn(int index) {
+            public int conquer() {
                 return 0;
             }
         };
         samePlayer = new Player(0) {
             @Override
-            public int turn(int index) {
+            public int conquer() {
                 return 0;
             }
         };
