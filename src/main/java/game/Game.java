@@ -16,6 +16,10 @@ public class Game implements IGame {
      * Size of a printed line
      */
     private static final int LINE_SIZE = 3;
+    /**
+     *
+     */
+    private static final int OFFSET_ROW = 3;
 
     /**
      * Storage of the fields
@@ -28,10 +32,7 @@ public class Game implements IGame {
     /**
      * Storage of the results
      */
-    private final List<List<Integer>> results = new ArrayList(
-            List.of(new ArrayList<>(List.of(0, 1, 2)), new ArrayList<>(List.of(3, 4, 5)), new ArrayList<>(List.of(6, 7, 8)),
-                    new ArrayList<>(List.of(0, 3, 6)), new ArrayList<>(List.of(1, 4, 7)), new ArrayList<>(List.of(2, 5, 8)),
-                    new ArrayList<>(List.of(0, 4, 8)), new ArrayList<>(List.of(2, 4, 6))));
+    private final List<List<Integer>> results;
 
     /**
      * Counter to calculate which player is to act
@@ -48,6 +49,18 @@ public class Game implements IGame {
      * @param vsComputer true, if the game is vs a computer, otherwise false
      */
     public Game(final boolean vsComputer) {
+        results = new ArrayList<>();
+
+        //Adds all results to results
+        for (int i = 0; i < 7; i += 3) {
+            results.add(new ArrayList<>(List.of(i, i + 1, i + 2)));
+        }
+        for (int i = 0; i < 3; i++) {
+            results.add(new ArrayList<>(List.of(i, i + OFFSET_ROW, i + 2*OFFSET_ROW)));
+        }
+        results.add(new ArrayList<>(List.of(0, 4, 8)));
+        results.add(new ArrayList<>(List.of(2, 4, 6)));
+
         fields = new ArrayList<>();
 
         //Adds all fields to fields
