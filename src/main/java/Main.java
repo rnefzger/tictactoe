@@ -2,7 +2,6 @@ import game.Game;
 import game.Human;
 import game.Player;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -23,70 +22,66 @@ public class Main {
             "HINWEIS: Es ist nur eine maximale Spieleranzahl von 2 Spielern möglich";
     private static final String ERROR_SPIELERANZAHL = ANSI_RED + "Diese Eingabe ist nicht möglich! " +
             "Bitte wählen Sie die Anzahl 1 oder 2 für ein gültiges Spiel!" + ANSI_RESET;
-    private static final String ERROR_FALSE_INDEX = ANSI_RED + "Dieses Feld existiert nicht" + ANSI_RESET;
     private static final String INTRO = ANSI_CYAN + "Sie haben sich für ein Spiel gegen %s entschieden. " +
             "Die Felder sind der Reihe nach von 1 bis 9 durchnummeriert. " +
             "Zur Wahl eines Feldes geben Sie eine Zahl von 1 bis 9 ein. Viel Spaß!\n" + ANSI_RESET;
     private static final String CHOOSE = ANSI_CYAN + "Spieler %d: Wählen Sie ein Feld.\n" + ANSI_RESET;
     private static final String COM_TURN = ANSI_CYAN + "Der Computer ist an der Reihe." + ANSI_RESET;
-    private static final String FIELD_ASSIGNED = ANSI_RED + "Dieses Feld ist bereits vergeben!" + ANSI_RESET;
     private static final String WIN = ANSI_BLUE + "Herzlichen Glückwunsch Spieler %d! Sie haben Gewonnen!\n" + ANSI_RESET;
     private static final String NO_WINNER = ANSI_BLUE + "Leider gibt es keinen Sieger." + ANSI_RESET;
+    private static final String COM_WINS = ANSI_BLUE + "Der Computer hat leider gewonnen." + ANSI_RESET;
     private static final String REPLAY = ANSI_CYAN + "Wollen Sie eine weitere Runde spielen?\n" +
             "Für ein ja geben Sie bitte yes ein, bei einer anderen Eingabe wird das Spiel beendet." + ANSI_RESET;
 
     private static boolean playable = true;
-    private static final Scanner scanner = new Scanner(System.in);
 
-    //TODO: Ausgabe zeigt noch Spieler 2 bei einem Spiel gegen den Computer an
-    //TODO: Bei Eingabe eines Strings kommt eine Exception
-    //Visible for testing
-    public static void runGame(final String input, final boolean vsComputer) {
-        System.out.printf(INTRO, input);
-
+    private static void runGame(final String input, final boolean vsComputer) {
         Game game = new Game(vsComputer);
+        boolean outputCom = true;
+
+        System.out.printf(INTRO, input);
         System.out.println(game + "\n");
 
         while (game.getWinner().getId() == 2 && !game.gameOver()) {
             Player currentPlayer = game.getPlayers().get(game.getTurnCounter());
-            int index = 0;
             boolean moved = false;
 
-            try {
-                if (currentPlayer instanceof Human) {
-                    System.out.printf(CHOOSE, game.getTurnCounter() + 1);
-                    index = scanner.nextInt();
-                } else {
-                    System.out.println(COM_TURN);
-                }
+            if (currentPlayer instanceof Human) {
+                System.out.printf(CHOOSE, game.getTurnCounter() + 1);
+            } else if (outputCom) {
+                System.out.println(COM_TURN);
 
-                index = currentPlayer.turn(index);
-                moved = game.conquer(index);
-
-                if (!moved && currentPlayer instanceof Human) {
-                    System.out.println(FIELD_ASSIGNED);
-                }
-
-            } catch (InputMismatchException | IllegalArgumentException e) {
-                System.out.println(ERROR_FALSE_INDEX);
+                outputCom = false;
             }
 
-            System.out.println(game);
+            moved = game.conquer();
+
+            if (moved) {
+                System.out.println(game);
+
+                outputCom = true;
+            }
         }
 
-        if (game.getWinner().getId() == 2) {
+        //Hier wird die Ausgabe für den Gewinner festgestellt
+        Player winner = game.getWinner();
+
+        if (winner.getId() == 2) {
             System.out.println(NO_WINNER);
+        } else if (winner instanceof Human){
+            System.out.printf(WIN, winner.getId() + 1);
         } else {
-            System.out.printf(WIN, game.getWinner().getId() + 1);
+            System.out.println(COM_WINS);
         }
     }
 
-    //TODO: Nach Fehler wird nach einem neuem Spiel gefragt
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         while (playable) {
             System.out.println(SPIELERANZAHL);
             boolean error = false;
-            String input = scanner.next();
+            String input = scanner.nextLine();
 
             if (input.equals(VS_COM)) {
                 runGame(VS_COM_STR, true);
@@ -99,7 +94,7 @@ public class Main {
 
             if (!error) {
                 System.out.println(REPLAY);
-                String replay = scanner.next();
+                String replay = scanner.nextLine();
 
                 if (!replay.equals(YES)) {
                     playable = false;
