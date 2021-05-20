@@ -15,6 +15,6 @@ class ComputerTest {
         Player player = new Computer(1);
         List<Integer> values = Stream.iterate(0, x -> ++x).limit(9).collect(Collectors.toList());
 
-        assertTrue(values.contains(player.turn()));
+        assertTrue(values.contains(player.conquer()));
     }
 }

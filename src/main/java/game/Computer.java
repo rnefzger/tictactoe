@@ -12,12 +12,12 @@ public class Computer extends Player {
     }
 
     /**
-     * Carry out a turn of the computer
+     * Calculates the index to conquer
      *
      * @return the index to conquer
      */
     @Override
-    public int turn() {
+    public int conquer() {
         return new Random().nextInt(8);
     }
 }
