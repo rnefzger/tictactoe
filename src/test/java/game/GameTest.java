@@ -38,8 +38,8 @@ class GameTest {
 
     @Test
     void conquer() {
-        game.conquer(0);
-        game.conquer(8);
+        game.turn(0);
+        game.turn(8);
 
         assertEquals("[X][ ][ ]\n[ ][ ][ ]\n[ ][ ][O]", game.toString());
         assertEquals(0, game.getTurnCounter());
@@ -47,52 +47,52 @@ class GameTest {
 
     @Test
     void conquerFilledField() {
-        game.conquer(0);
-        game.conquer(0);
+        game.turn(0);
+        game.turn(0);
 
         assertEquals("[X][ ][ ]\n[ ][ ][ ]\n[ ][ ][ ]", game.toString());
     }
 
     @Test
     void conquerFalseInput() {
-        assertThrows(IllegalArgumentException.class, () -> game.conquer(-1));
-        assertThrows(IllegalArgumentException.class, () -> game.conquer(9));
+        assertFalse(game.turn(-1));
+        assertFalse(game.turn(9));
     }
 
     @Test
     void finished1() {
-        game.conquer(0);
-        game.conquer(3);
-        game.conquer(1);
-        game.conquer(4);
-        game.conquer(2);
+        game.turn(0);
+        game.turn(3);
+        game.turn(1);
+        game.turn(4);
+        game.turn(2);
 
         assertEquals(new Human(0), game.getWinner());
     }
 
     @Test
     void finished2() {
-        game.conquer(7);
-        game.conquer(3);
-        game.conquer(8);
-        game.conquer(4);
-        game.conquer(6);
-        game.conquer(5);
+        game.turn(7);
+        game.turn(3);
+        game.turn(8);
+        game.turn(4);
+        game.turn(6);
+        game.turn(5);
 
         assertEquals(new Human(1), game.getWinner());
     }
 
     @Test
     void gameOver() {
-        game.conquer(0);
-        game.conquer(1);
-        game.conquer(2);
-        game.conquer(3);
-        game.conquer(4);
-        game.conquer(5);
-        game.conquer(6);
-        game.conquer(7);
-        game.conquer(8);
+        game.turn(0);
+        game.turn(1);
+        game.turn(2);
+        game.turn(3);
+        game.turn(4);
+        game.turn(5);
+        game.turn(6);
+        game.turn(7);
+        game.turn(8);
 
         assertTrue(game.gameOver());
     }
