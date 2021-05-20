@@ -9,17 +9,26 @@ import java.util.stream.Collectors;
 public class Game implements IGame {
 
     /**
-     * Highest index for a Field
+     * Is used to set console Colors
      */
-    private static final int HIGHEST_INDEX = 8;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+
+    private static final String ERROR_FALSE_INDEX = ANSI_RED + "Dieses Feld existiert nicht" + ANSI_RESET;
+    private static final String FIELD_ASSIGNED = ANSI_RED + "Dieses Feld ist bereits vergeben!" + ANSI_RESET;
+
     /**
      * Size of a printed line
      */
     private static final int LINE_SIZE = 3;
     /**
-     *
+     * Offset to generate a row for results
      */
     private static final int OFFSET_ROW = 3;
+    /**
+     * Represents the maximum size of fields
+     */
+    private static final int MAX_FIELD_SIZE = 9;
 
     /**
      * Storage of the fields
@@ -64,7 +73,7 @@ public class Game implements IGame {
         fields = new ArrayList<>();
 
         //Adds all fields to fields
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < MAX_FIELD_SIZE; i++) {
             fields.add(new Field(i));
         }
 
@@ -91,28 +100,40 @@ public class Game implements IGame {
     }
 
     /**
-     * Let the current player conquer the given field
+     * Let the current player take his turn
      *
-     * @param index field to be conquered
+     * @param forTests to set a fix index (only used for testing the method)
      * @return true, if the field got conquered, otherwise false
      */
     @Override
-    public boolean conquer(int index) {
-        if (index < 0 || index > HIGHEST_INDEX) {
-            throw new IllegalArgumentException();
-        }
+    public boolean turn(final Integer... forTests) {
+        Player currentPlayer = players.get(turnCounter);
+        Field field;
 
-        if (fields.get(index).getBelongsTo().getId() != 2) {
+        try {
+            if (forTests.length != 0) {
+                field = fields.get(currentPlayer.conquer(forTests[0]));
+            } else {
+                field = fields.get(currentPlayer.conquer());
+            }
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            System.out.println(ERROR_FALSE_INDEX);
             return false;
         }
 
-        Field field = fields.get(index);
+        if (field.getBelongsTo().getId() != 2) {
+            if (currentPlayer instanceof Human) {
+                System.out.println(FIELD_ASSIGNED);
+            }
+
+            return false;
+        }
 
         field.setFilled(true);
-        field.setBelongsTo(players.get(turnCounter));
+        field.setBelongsTo(currentPlayer);
 
         if (win()) {
-            winner = players.get(turnCounter);
+            winner = currentPlayer;
         }
 
         nextTurn();
