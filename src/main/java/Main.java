@@ -71,7 +71,7 @@ public class Main {
                 outputCom = false;
             }
 
-            moved = game.conquer(forTests);
+            moved = game.turn(forTests);
 
             if (moved) {
                 System.out.println(game);
