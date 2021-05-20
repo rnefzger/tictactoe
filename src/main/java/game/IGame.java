@@ -4,7 +4,7 @@ public interface IGame {
 
     void nextTurn();
 
-    boolean conquer(final int index);
+    boolean turn(final Integer... index);
 
     boolean win();
 
