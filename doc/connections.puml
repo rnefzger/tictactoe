@@ -16,18 +16,19 @@ class Field {
 }
 
 class Game {
-    -{static} HIGHEST_INDEX: int
     -{static} LINE_SIZE: int
+    -{static} OFFSET_ROW: int
+    -{static} MAX_FIELD_SIZE: int
 
     -fields: List<Field>
-    -player: List<Player>
+    -players: List<Player>
     -results: List<List<Integer>>
 
     -turnCounter: int
     -winner: Player
 
     +nextTurn(): void
-    +conquer(index: int): boolean
+    +turn(forTests: Integer...): boolean
     +gameOver(): boolean
     +win(): boolean
     +getTurnCounter(): int
@@ -38,7 +39,7 @@ class Game {
 
 interface IGame {
     +nextTurn(): void
-    +conquer(index: int): boolean
+    +turn(forTests: Integer...): boolean
     +win(): boolean
     +gameOver(): boolean
 }
@@ -46,8 +47,9 @@ interface IGame {
 class Player {
     -id: int
 
-    +{abstract} turn(scanner: Scanner): int
+    +{abstract} conquer(): int
 
+    +conquer(index: int): int
     +getId(): int
     +equals(o: Object): boolean
     +hashCode(): int
@@ -55,9 +57,13 @@ class Player {
 }
 
 class Human {
-    -id: int
+    -{static} HIGHEST_INDEX: int
 
-    +turn(scanner: Scanner): int
+    -id: int
+    -scanner: Scanner
+
+    +conquer(): int
+    +conquer(index: int): int
     +getId(): int
     +equals(o: Object): boolean
     +hashCode(): int
@@ -65,9 +71,12 @@ class Human {
 }
 
 class Computer {
+    -{static} MAX_NUMBER: int
+
     -id: int
 
-    +turn(scanner: Scanner): int
+    +conquer(): int
+    +conquer(index: int): int
     +getId(): int
     +equals(o: Object): boolean
     +hashCode(): int
@@ -75,29 +84,30 @@ class Computer {
 }
 
 class Main {
-    -{static} VS_COM: int
-    -{static} VS_HUMAN: int
+    -{static} VS_COM: String
+    -{static} VS_HUMAN: String
+    -{static} YES: String
     -{static} playable: boolean
-    -{static} scanner: Scanner
 
     -{static} runGame(input: String, vsComputer: boolean): void
     +{static} main(args: String[]): void
 }
 
-Game .left.> IGame
+Game -left-|> IGame
 
-Game .up.> Field : <<uses>>
-Game .up.> Human : <<uses>>
-Game .up.> Computer : <<uses>>
+Game .up.> Field : <<creates>>
+Game .up.> Human : <<creates>>
+Game .up.> Computer : <<creates>>
+Game ..> Player : <<uses>>
 
 Human -up-|> Player
 Computer -up-|> Player
 
-Field .up.> Human : <<uses>>
-Field .up.> Computer : <<uses>>
+Field .up.> Player : <<uses>>
+Field .up.> Computer : <<creates>>
 
 Main .up.> Computer : <<uses>>
 Main .up.> Human : <<uses>>
-Main .up.> Game : <<uses>>
+Main .up.> Game : <<creates>>
 
 @enduml
