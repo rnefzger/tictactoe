@@ -8,6 +8,11 @@ import java.util.Scanner;
 public class Human extends Player {
 
     /**
+     * Highest index for a Field
+     */
+    private static final int HIGHEST_INDEX = 8;
+
+    /**
      * Is used to scan the next input line
      */
     private final Scanner scanner;

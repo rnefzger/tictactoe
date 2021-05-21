@@ -8,11 +8,6 @@ import java.util.Objects;
 public abstract class Player {
 
     /**
-     * Highest index for a Field
-     */
-    static final int HIGHEST_INDEX = 8;
-
-    /**
      * The unique identifier of this player
      */
     private final int id;
