@@ -1,11 +1,113 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-autonumber
+class Field {
+    -index: int
+    -isFilled: boolean
+    -belongsTo: Player
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+    +setFilled(filled: boolean): void
+    +setBelongsTo(belongsTo: Player): void
+    +isFilled(): boolean
+    +getIndex(): int
+    +getBelongsTo(): Player
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+class Game {
+    -{static} LINE_SIZE: int
+    -{static} OFFSET_ROW: int
+    -{static} MAX_FIELD_SIZE: int
+
+    -fields: List<Field>
+    -players: List<Player>
+    -results: List<List<Integer>>
+
+    -turnCounter: int
+    -winner: Player
+
+    +nextTurn(): void
+    +turn(forTests: Integer...): boolean
+    +gameOver(): boolean
+    +win(): boolean
+    +getTurnCounter(): int
+    +getWinner(): Player
+    +getPlayers(): List<Player>
+    +toString(): String
+}
+
+interface IGame {
+    +nextTurn(): void
+    +turn(forTests: Integer...): boolean
+    +win(): boolean
+    +gameOver(): boolean
+}
+
+class Player {
+    -id: int
+
+    +{abstract} conquer(): int
+
+    +conquer(index: int): int
+    +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
+
+class Human {
+    -{static} HIGHEST_INDEX: int
+
+    -id: int
+    -scanner: Scanner
+
+    +conquer(): int
+    +conquer(index: int): int
+    +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
+
+class Computer {
+    -{static} MAX_NUMBER: int
+
+    -id: int
+
+    +conquer(): int
+    +conquer(index: int): int
+    +getId(): int
+    +equals(o: Object): boolean
+    +hashCode(): int
+    +toString(): String
+}
+
+class Main {
+    -{static} VS_COM: String
+    -{static} VS_HUMAN: String
+    -{static} YES: String
+    -{static} playable: boolean
+
+    -{static} runGame(input: String, vsComputer: boolean): void
+    +{static} main(args: String[]): void
+}
+
+Game -left-|> IGame
+
+Game .up.> Field : <<creates>>
+Game .up.> Human : <<creates>>
+Game .up.> Computer : <<creates>>
+Game ..> Player : <<uses>>
+
+Human -up-|> Player
+Computer -up-|> Player
+
+Field .up.> Player : <<uses>>
+Field .up.> Computer : <<creates>>
+
+Main .up.> Computer : <<uses>>
+Main .up.> Human : <<uses>>
+Main .up.> Game : <<creates>>
+
 @enduml
