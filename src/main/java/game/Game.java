@@ -14,6 +14,9 @@ public class Game implements IGame {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
 
+    /**
+     * Error messages
+     */
     private static final String ERROR_FALSE_INDEX = ANSI_RED + "Dieses Feld existiert nicht" + ANSI_RESET;
     private static final String FIELD_ASSIGNED = ANSI_RED + "Dieses Feld ist bereits vergeben!" + ANSI_RESET;
 
@@ -84,8 +87,9 @@ public class Game implements IGame {
             players = new ArrayList<>(List.of(new Human(0), new Human(1)));
         }
 
+        // new Random().nextInt(2)
         turnCounter = 0;
-        //Sets a default winner
+        // Sets a default winner
         winner = new Computer(2);
 
         fields.sort(Comparator.comparingInt(Field::getIndex));
