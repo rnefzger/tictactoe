@@ -9,10 +9,11 @@ import java.util.Scanner;
  */
 public class Main {
 
+    /**
+     * Inputs to check
+     */
     private static final String VS_COM = "1";
     private static final String VS_HUMAN = "2";
-    private static final String VS_COM_STR = "den Computer";
-    private static final String VS_HUMAN_STR = "einen Gegenspieler";
     private static final String YES = "yes";
 
     /**
@@ -22,6 +23,9 @@ public class Main {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_CYAN = "\u001B[36m";
+
+    private static final String VS_COM_STR = "den Computer";
+    private static final String VS_HUMAN_STR = "einen Gegenspieler";
 
     private static final String SPIELERANZAHL = ANSI_CYAN + "Bitte geben Sie die Anzahl der Spieler an. " +
             "Bei 1 wird ein Spiel gegen einen Computer eröffnet.\n" + ANSI_RESET +
@@ -50,8 +54,7 @@ public class Main {
      * @param input to be printed out what kind of game it is
      * @param vsComputer true, if it's a game vs a computer, otherwise false
      */
-    // Visible for tests
-    public static void runGame(final String input, final boolean vsComputer) {
+    private static void runGame(final String input, final boolean vsComputer) {
         Game game = new Game(vsComputer);
         boolean outputCom = true;
 
@@ -92,6 +95,11 @@ public class Main {
         }
     }
 
+    /**
+     * Start of the game
+     *
+     * @param args unused
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
