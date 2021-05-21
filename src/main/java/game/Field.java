@@ -24,7 +24,8 @@ public class Field {
     Field(final int index) {
         this.index = index;
         isFilled = false;
-        belongsTo = new Human(2);
+        // refactor zu null eventuell notwendig
+        belongsTo = new Computer(2);
     }
 
     @Generated({})
