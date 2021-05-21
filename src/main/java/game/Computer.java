@@ -7,6 +7,11 @@ import java.util.Random;
  */
 public class Computer extends Player {
 
+    /**
+     * Highest number to generate (exclusive)
+     */
+    private static final int MAX_NUMBER = 9;
+
     Computer(final int id) {
         super(id);
     }
@@ -18,6 +23,6 @@ public class Computer extends Player {
      */
     @Override
     public int conquer() {
-        return new Random().nextInt(8);
+        return new Random().nextInt(MAX_NUMBER);
     }
 }
