@@ -29,7 +29,7 @@ public class Main {
     private static final String ERROR_SPIELERANZAHL = ANSI_RED + "Diese Eingabe ist nicht möglich! " +
             "Bitte wählen Sie die Anzahl 1 oder 2 für ein gültiges Spiel!" + ANSI_RESET;
     private static final String INTRO = ANSI_CYAN + "Sie haben sich für ein Spiel gegen %s entschieden. " +
-            "Die Felder sind der Reihe nach von 1 bis 9 durchnummeriert. " +
+            "Die Felder sind der Reihe nach von 1 bis 9 durchnummeriert.\n" +
             "Zur Wahl eines Feldes geben Sie eine Zahl von 1 bis 9 ein. Viel Spaß!\n" + ANSI_RESET;
     private static final String CHOOSE = ANSI_CYAN + "Spieler %d: Wählen Sie ein Feld.\n" + ANSI_RESET;
     private static final String COM_TURN = ANSI_CYAN + "Der Computer ist an der Reihe." + ANSI_RESET;
@@ -49,9 +49,9 @@ public class Main {
      *
      * @param input to be printed out what kind of game it is
      * @param vsComputer true, if it's a game vs a computer, otherwise false
-     * @param forTests to set a fix index (only used for testing the method)
      */
-    private static void runGame(final String input, final boolean vsComputer, final Integer... forTests) {
+    // Visible for tests
+    public static void runGame(final String input, final boolean vsComputer) {
         Game game = new Game(vsComputer);
         boolean outputCom = true;
 
@@ -71,7 +71,7 @@ public class Main {
                 outputCom = false;
             }
 
-            moved = game.turn(forTests);
+            moved = game.turn();
 
             if (moved) {
                 System.out.println(game);
